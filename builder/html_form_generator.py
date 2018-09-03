@@ -1,20 +1,33 @@
 "Generating stright HTML forms."
 
-def generate_webform(field_list):
-    generate_fields = "\n".join(
-        map(
-            lambda x: f'{x}:<br><input type="txt" name={x}><br>', field_list
+def generate_webform(text_fields, checkbox_fields):
+    if text_fields:
+        generated_fields = "\n".join(
+            map(
+                lambda x: f'{x}:<br><input type="txt" name={x}><br>', text_fields
+            )
         )
-    )
+    else:
+        generated_fields = ""
 
-    return f"<form>{generate_fields}</form>"
+    if checkbox_fields:
+        generated_fields += "\n".join(
+            map(
+                lambda x: f'<label><input type="checkbox" id="{x}" value="{x}">{x}<br>', checkbox_fields
+            )
+        )
 
-def build_html_form(fields):
-    with open("generated_form_file.html", 'w') as f:
+    return f"<form>{generated_fields}</form>"
+
+def build_html_form(text_fields, checkbox_fields):
+    with open("generated_form_with_checkbox_file.html", 'w') as f:
         f.write(
-            "<html><body>{}</body></html>".format(generate_webform(fields))
+            "<html><body>{}</body></html>".format(
+                generate_webform(text_fields, checkbox_fields)
+            )
         )
 
 if __name__ == "__main__":
-    fields = ["name", "age", "email", "telephone"]
-    build_html_form(fields)
+    text_fields = ["name", "age", "email", "telephone"]
+    checkbox_fields = ["awesome", "bad"]
+    build_html_form(text_fields, checkbox_fields)
